@@ -84,6 +84,7 @@ void *client_handler(void *arg) {
             printf("Cliente pediu quit\n");
             break;
         }
+
         else if (cmd == CMD_LIST) {
             char list[BUFFER_SIZE] = "";
             system("mkdir -p storage"); 
@@ -106,8 +107,8 @@ void *client_handler(void *arg) {
 
             send_frame(connfd, CMD_LIST, strlen(list), list);
         }
+
         else if (cmd == CMD_PUT) {
-            // Primeiro payload = nome do arquivo
             char filename[256];
             strncpy(filename, buffer, length);
             filename[length] = '\0';
@@ -115,27 +116,48 @@ void *client_handler(void *arg) {
             char filepath[300];
             snprintf(filepath, sizeof(filepath), "./storage/%s", filename);
 
+            // separa nome e extensão
+            char name[256], ext[50];
+            char *dot = strrchr(filename, '.');
+            if (dot) {
+                strncpy(name, filename, dot - filename);
+                name[dot - filename] = '\0';
+                strcpy(ext, dot); 
+            } else {
+                strcpy(name, filename);
+                ext[0] = '\0';
+            }
+
+            // verifica se ja existe e cria novo nome (1, 2, ...)
+            char newpath[300];
+            int count = 1;
+            strcpy(newpath, filepath); // primeiro tenta o nome original
+            while (access(newpath, F_OK) == 0) { // enquanto arquivo existir
+                snprintf(newpath, sizeof(newpath), "./storage/%s(%d)%s", name, count++, ext);
+            }
+            strcpy(filepath, newpath);
+
             FILE *f = fopen(filepath, "wb");
             if (!f) {
                 perror("Erro ao criar arquivo");
                 break;
             }
 
-            printf("Recebendo arquivo: %s\n", filename);
-            fprintf(log, "Recebendo arquivo: %s\n", filename);
+            printf("Recebendo arquivo: %s\n", filepath);
+            fprintf(log, "Recebendo arquivo: %s\n", filepath);
             fflush(log);
 
-            // Recebe frames subsequentes com dados do arquivo 4 KB por vez até receber frame vazio
             while (recv_frame(connfd, &cmd, &length, buffer) == 0 && cmd == CMD_PUT) {
-                if (length == 0) break; // fim do arquivo
+                if (length == 0) break;
                 fwrite(buffer, 1, length, f);
             }
             fclose(f);
-            
-            printf("Arquivo %s recebido com sucesso!\n", filename);
-            fprintf(log, "Arquivo %s recebido com sucesso!\n", filename);
+
+            printf("Arquivo %s recebido com sucesso!\n", filepath);
+            fprintf(log, "Arquivo %s recebido com sucesso!\n", filepath);
             fflush(log);
         }
+
         else {
             printf("Comando desconhecido: %d\n", cmd);
         }

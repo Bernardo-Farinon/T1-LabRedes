@@ -1,0 +1,9 @@
+cliente/*
+!cliente/*.c
+
+servidor/*
+!servidor/*.c
+
+storage/*
+
+*.txt

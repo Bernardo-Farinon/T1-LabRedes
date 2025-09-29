@@ -16,7 +16,7 @@ long total_sent = 0;
 long total_received = 0;
 struct timeval start_time, end_time;
 
-// Lê exatamente "length" bytes
+// le exatamente "length" bytes
 int read_all(int sock, char *buf, int length) {
     int total = 0, n;
     while (total < length) {
@@ -28,7 +28,7 @@ int read_all(int sock, char *buf, int length) {
     return total;
 }
 
-// Envia frame
+// envia frame no formato [cmd(1)][length(2)][data(length)] sendo cmd um byte length dois bytes big-endian e data o payload
 int send_frame(int sock, uint8_t cmd, uint16_t length, const char *data) {
     uint8_t header[3];
     header[0] = cmd;
@@ -45,7 +45,7 @@ int send_frame(int sock, uint8_t cmd, uint16_t length, const char *data) {
     return 0;
 }
 
-// Recebe frame
+// recebe frame no formato [cmd(1)][length(2)][data(length)] ...
 int recv_frame(int sock, uint8_t *cmd, uint16_t *length, char *data) {
     uint8_t header[3];
     int n = read_all(sock, (char*)header, 3);
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    gettimeofday(&start_time, NULL); // início da conexão
+    gettimeofday(&start_time, NULL); // inicio da conexao
     printf("Conectado ao servidor %s:%s\n", argv[1], argv[2]);
 
     while (1) {
