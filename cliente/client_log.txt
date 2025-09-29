@@ -1,0 +1,21 @@
+
+===== LOG DE CONEXÃO =====
+Tempo de duração: 26.75 segundos
+Bytes enviados: 9
+Bytes recebidos: 32
+Taxa média: 1.53 bytes/s
+==========================
+
+===== LOG DE CONEXÃO =====
+Tempo de duração: 123.87 segundos
+Bytes enviados: 104
+Bytes recebidos: 84
+Taxa média: 1.52 bytes/s
+==========================
+
+===== LOG DE CONEXÃO =====
+Tempo de duração: 4.11 segundos
+Bytes enviados: 6
+Bytes recebidos: 26
+Taxa média: 7.78 bytes/s
+==========================

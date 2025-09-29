@@ -1,0 +1,12 @@
+Novo cliente conectado. Clientes ativos: 1
+Novo cliente conectado. Clientes ativos: 2
+Recebendo arquivo: teste.txt
+Arquivo teste.txt recebido com sucesso!
+Cliente desconectado. Clientes ativos: 1
+Recebendo arquivo: teste123.txt
+Arquivo teste123.txt recebido com sucesso!
+Recebendo arquivo: teste.txt
+Arquivo teste.txt recebido com sucesso!
+Cliente desconectado. Clientes ativos: 0
+Novo cliente conectado. Clientes ativos: 1
+Cliente desconectado. Clientes ativos: 0
